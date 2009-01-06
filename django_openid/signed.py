@@ -34,8 +34,9 @@ There are 65 url-safe characters: the 64 used by url-safe base64 and the '.'.
 These functions make use of all of them.
 """
 
-import pickle, base64, hashlib
+import pickle, base64
 from django.conf import settings
+from django.utils.hashcompat import sha1_constructor
 
 def dumps(obj, secret = None, compress = False, extra_salt = ''):
     """
@@ -111,4 +112,4 @@ def unsign(signed_value, key = None):
         raise BadSignature, 'Signature failed: %s' % sig
 
 def base64_sha1(s):
-    return base64.urlsafe_b64encode(hashlib.sha1(s).digest()).strip('=')
+    return base64.urlsafe_b64encode(sha1_constructor(s).digest()).strip('=')
