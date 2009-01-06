@@ -11,6 +11,7 @@ urlpatterns = patterns('',
 )
 """
 from django.conf import settings
+from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response
 from openid.consumer import consumer
@@ -108,7 +109,8 @@ Fzk0lpcjIQA7""".strip()
     def render(self, request, template, context=None):
         context = context or {}
         context['base_template'] = self.base_template
-        return render_to_response(template, context)
+        return render_to_response(template, context,
+            context_instance=RequestContext(request))
     
     def __call__(self, request, rest_of_url=''):
         if not request.path.endswith('/'):
